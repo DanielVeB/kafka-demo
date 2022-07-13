@@ -27,6 +27,7 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-common:1.7.0")
 
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	testImplementation("org.apache.kafka:kafka-streams-test-utils:3.1.0")
 
 }
 
