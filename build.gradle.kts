@@ -9,7 +9,7 @@ plugins {
 
 group = "com.kuroszdaniel"
 version = "0.0.1-SNAPSHOT"
-java.sourceCompatibility = JavaVersion.VERSION_17
+java.sourceCompatibility = JavaVersion.VERSION_11
 
 repositories {
 	mavenCentral()
@@ -28,13 +28,15 @@ dependencies {
 
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.apache.kafka:kafka-streams-test-utils:3.1.0")
+// https://mvnrepository.com/artifact/org.springframework.kafka/spring-kafka-test
+	testImplementation("org.springframework.kafka:spring-kafka-test:2.8.7")
 
 }
 
 tasks.withType<KotlinCompile> {
 	kotlinOptions {
 		freeCompilerArgs = listOf("-Xjsr305=strict")
-		jvmTarget = "17"
+		jvmTarget = "11"
 	}
 }
 
