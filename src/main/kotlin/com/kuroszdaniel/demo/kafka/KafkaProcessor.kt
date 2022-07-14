@@ -19,7 +19,10 @@ class KafkaProcessor() {
     fun buildPipeline(streamsBuilder: StreamsBuilder) {
         streamsBuilder
             .stream("testTopic", Consumed.with(STRING_SERDE, STRING_SERDE))
-            .map{key, value -> KeyValue(key, value.uppercase())}
+            .map { key, value ->
+                println("HELLO: $key + $value")
+                KeyValue(key, value.uppercase())
+            }
             .to("testTopic2")
     }
 
