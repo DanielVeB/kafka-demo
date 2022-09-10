@@ -1,5 +1,6 @@
 package com.kuroszdaniel.demo.kafka
 
+import io.mockk.mockk
 import org.apache.kafka.common.serialization.Serdes
 import org.apache.kafka.common.serialization.StringDeserializer
 import org.apache.kafka.common.serialization.StringSerializer
@@ -24,7 +25,7 @@ internal class KafkaProcessorTest {
 
     @BeforeAll
     fun setUp() {
-        kafkaProcessor = KafkaProcessor()
+        kafkaProcessor = KafkaProcessor(mockk())
     }
 
     @BeforeEach

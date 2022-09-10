@@ -1,5 +1,6 @@
 package com.kuroszdaniel.demo.kafka
 
+import com.kuroszdaniel.demo.config.KafkaStreamsConfig
 import org.apache.kafka.common.serialization.Serde
 import org.apache.kafka.common.serialization.Serdes
 import org.apache.kafka.streams.KeyValue
@@ -10,20 +11,21 @@ import org.springframework.stereotype.Component
 
 
 @Component
-class KafkaProcessor() {
+class KafkaProcessor(val kafkaStreamsConfig: KafkaStreamsConfig) {
     companion object {
         val STRING_SERDE: Serde<String> = Serdes.String()
+        val INT_SERDE: Serde<Int> = Serdes.Integer()
     }
 
     @Autowired
     fun buildPipeline(streamsBuilder: StreamsBuilder) {
         streamsBuilder
-            .stream("testTopic", Consumed.with(STRING_SERDE, STRING_SERDE))
+            .stream(kafkaStreamsConfig.inputTopic, Consumed.with(INT_SERDE, STRING_SERDE))
+            .peek{key, value -> println("Key: $key, value: $value") }
             .map { key, value ->
-                println("HELLO: $key + $value")
                 KeyValue(key, value.uppercase())
             }
-            .to("testTopic2")
+            .to(kafkaStreamsConfig.outputTopic)
     }
 
 }

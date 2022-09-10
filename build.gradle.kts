@@ -16,9 +16,11 @@ repositories {
 }
 
 dependencies {
-//	implementation("org.springframework.boot:spring-boot-starter-data-cassandra")
+
 	implementation("org.springframework.boot:spring-boot-starter-web")
-	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+    annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
+
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 	implementation("org.springframework.kafka:spring-kafka:2.8.7")
@@ -30,6 +32,9 @@ dependencies {
 	testImplementation("org.apache.kafka:kafka-streams-test-utils:3.1.0")
 // https://mvnrepository.com/artifact/org.springframework.kafka/spring-kafka-test
 	testImplementation("org.springframework.kafka:spring-kafka-test:2.8.7")
+
+    testImplementation("io.mockk:mockk:1.12.7")
+
 
 }
 
