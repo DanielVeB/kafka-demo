@@ -1,9 +1,9 @@
 package com.kuroszdaniel.demo.kafka
 
-import io.mockk.mockk
-import org.apache.kafka.common.serialization.Serdes
-import org.apache.kafka.common.serialization.StringDeserializer
-import org.apache.kafka.common.serialization.StringSerializer
+import com.kuroszdaniel.demo.config.KafkaStreamsConfig
+import io.mockk.every
+import io.mockk.mockkClass
+import org.apache.kafka.common.serialization.*
 import org.apache.kafka.streams.*
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -20,12 +20,16 @@ internal class KafkaProcessorTest {
     private lateinit var kafkaProcessor: KafkaProcessor
 
     private lateinit var topologyTestDriver: TopologyTestDriver
-    private lateinit var inputTopic: TestInputTopic<String, String>
-    private lateinit var outputTopic: TestOutputTopic<String, String>
+    private lateinit var inputTopic: TestInputTopic<Int, String>
+    private lateinit var outputTopic: TestOutputTopic<Int, String>
 
     @BeforeAll
     fun setUp() {
-        kafkaProcessor = KafkaProcessor(mockk())
+        val config = mockkClass(KafkaStreamsConfig::class)
+        every { config.server }.returns("localhost:9092")
+        every { config.inputTopic }.returns("testTopic")
+        every { config.outputTopic }.returns("testTopic2")
+        kafkaProcessor = KafkaProcessor(config)
     }
 
     @BeforeEach
@@ -38,13 +42,13 @@ internal class KafkaProcessorTest {
         val props = Properties()
         props[StreamsConfig.APPLICATION_ID_CONFIG] = "test"
         props[StreamsConfig.BOOTSTRAP_SERVERS_CONFIG] = "localhost:9092"
-        props[StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG] = Serdes.String().javaClass.name
+        props[StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG] = Serdes.Integer().javaClass.name
         props[StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG] = Serdes.String().javaClass.name
 
         topologyTestDriver = TopologyTestDriver(topology, props)
 
-        inputTopic = topologyTestDriver.createInputTopic("testTopic", StringSerializer(), StringSerializer())
-        outputTopic = topologyTestDriver.createOutputTopic("testTopic2", StringDeserializer(), StringDeserializer())
+        inputTopic = topologyTestDriver.createInputTopic("testTopic", IntegerSerializer(), StringSerializer())
+        outputTopic = topologyTestDriver.createOutputTopic("testTopic2", IntegerDeserializer(), StringDeserializer())
 
     }
 
@@ -52,9 +56,9 @@ internal class KafkaProcessorTest {
     @Test
     fun `should put to output topic upper cased message`() {
         assertTrue(outputTopic.isEmpty)
-        inputTopic.pipeInput("key", "value")
+        inputTopic.pipeInput(1, "value")
 
-        assertEquals(outputTopic.readKeyValue(), KeyValue("key", "VALUE"))
+        assertEquals(outputTopic.readKeyValue(), KeyValue(1, "VALUE"))
     }
 
 }

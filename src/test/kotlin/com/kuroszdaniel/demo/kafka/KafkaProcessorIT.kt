@@ -22,8 +22,8 @@ import java.util.*
 @EmbeddedKafka(
     partitions = 1,
     brokerProperties = [
-        "listeners=PLAINTEXT://localhost:9092",
-        "port=9092"
+        "listeners=PLAINTEXT://localhost:9091",
+        "port=9091"
     ],
     topics = ["messages", "upper_messages"]
 )

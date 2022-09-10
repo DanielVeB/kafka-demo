@@ -1,5 +1,6 @@
 kafka:
   streams:
+    application-id: "kafka-demo-app"
     bootstrap-servers: ${spring.embedded.kafka.brokers}
     output-topic: "upper_messages"
     input-topic: "messages"
