@@ -1,0 +1,29 @@
+{
+  "name": "Cat",
+  "namespace": "kafka.example",
+  "type": "record",
+  "fields": [
+    {
+      "name": "breed",
+      "type": {
+        "name": "Breed",
+        "type": "enum",
+        "symbols": [
+          "ABYSSINIAN",
+          "AMERICAN_SHORTHAIR",
+          "BIRMAN",
+          "MAINE_COON",
+          "ORIENTAL",
+          "PERSIAN",
+          "RAGDOLL",
+          "SIAMESE",
+          "SPHYNX"
+        ]
+      }
+    },
+    {
+      "name": "name",
+      "type": "string"
+    }
+  ]
+}

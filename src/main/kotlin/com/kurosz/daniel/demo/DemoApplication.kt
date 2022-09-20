@@ -1,4 +1,4 @@
-package com.kuroszdaniel.demo
+package com.kurosz.daniel.demo
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
